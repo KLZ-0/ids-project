@@ -1,7 +1,7 @@
-\documentclass[10pt, a4paper]{article}
+\documentclass[11pt, a4paper]{article}
 
 \usepackage[utf8x]{inputenc}
-\usepackage[left=1.8cm, text={18cm, 25cm}, top=1.8cm]{geometry}
+\usepackage[left=1.8cm, text={18cm, 25cm}, top=2.2cm]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[czech]{babel}
 \usepackage{xcolor}
@@ -9,7 +9,9 @@
 \usepackage{bookmark}
 \usepackage{graphicx}
 
-\title{\includegraphics[width=0.4\linewidth]{fig/logo_en.png}\vspace{1cm}\\\huge{Projekt IDS\\2020/2021}\\\vspace{1cm}1. část - Datový model (ERD), model případů užití}
+\graphicspath{{fig/}}
+
+\title{\includegraphics[width=0.4\linewidth]{logo_en.png}\vspace{1cm}\\\huge{Projekt IDS\\2020/2021}\\\vspace{1cm}1. část - Datový model (ERD), model případů užití}
 \author{Adrián Kálazi, Kevin Lackó\\xkalaz00, xlacko08}
 \date{}
 
@@ -20,7 +22,7 @@
 	\bigskip
 
 	\begin{center}
-		\textbf{\Large{Zadanie č. 49 - Bug Tracker}}
+		\textbf{\Large{Zadanie IUS č. 49 - Bug Tracker}}
 	\end{center}
 
 	Vytvořte informační systém pro hlášení a správů chyb a zranitelností systému.
@@ -36,5 +38,46 @@
 	Kromě data vytvoření patche rovněž evidujte datum zavedení patche do ostrého provozu.
 	Každý uživatel a programátor je charakterizován základními informacemi (jméno, věk, apod.), ale současně i jazyky, kterými disponuje, apod.
 	V případě opravení bugů, mohou být uživatele upozorněni na danou opravu a případně být odměněni peněžní hodnotou (podle závažnosti bugu či zranitelnosti).
+
+
+	\newpage
+	\section{Use case diagram}
+	\begin{center}
+		\vspace*{\fill}
+		\includegraphics[width=0.9\linewidth]{UC_diagram.pdf}
+		\vspace*{\fill}
+	\end{center}
+
+	\newpage
+	\section{Entity relationship diagram}
+	\begin{center}
+		\vspace*{\fill}
+		\includegraphics[width=0.95\linewidth]{ER_diagram.pdf}
+		\vspace*{\fill}
+	\end{center}
+
+	\newpage
+	\section{Popis diagramov}
+	\subsection{Entity na správu užívateľov}
+
+	\begin{itemize}
+	\item \emph{Užívateľ} - vytvára tikety a patche
+	\item \emph{Programátor} - je špecializácia užívateľa + schvaľuje patche a zodpovedá za moduly
+	\end{itemize}
+
+	\subsection{Entity na zaznamenávanie bugov}
+
+	\begin{itemize}
+	\item \emph{Ticket} - vytvára ho užívateľ ak nájde bug(y), je aktívny pokiaľ aspoň jeden z odkazovaných bugov je aktívny
+	\item \emph{Bug} - Chyba v systéme ktorá môže byť nahlásená viacerými užívateľmi (pomocou viacerých tiketov), podľa jeho závažnosti zaň môže byť vypísaná odmena
+	\item \emph{Patch} - Oprava bug(ov), musí byť schválený všetkými programátormi na ktorých moduly sa vzťahuje
+	\end{itemize}
+
+	\subsection{Doplnkové entity}
+
+	\begin{itemize}
+	\item \emph{Jazyk} - zoznam programovacích jazykov
+	\item \emph{Modul} - moduly systému - pri vytvorení bugu sa odošle notifikácia programátorovi ktorý zodpovedá za príslušný modul
+	\end{itemize}
 
 \end{document}
