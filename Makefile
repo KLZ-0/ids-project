@@ -9,4 +9,3 @@ $(TARGET).pdf: $(TARGET).tex
 
 clean:
 	rm -f $(TARGET){.dvi,.aux,.log,.out.ps,.ps,.pdf}
-
