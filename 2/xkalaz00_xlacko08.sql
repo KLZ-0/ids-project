@@ -36,7 +36,7 @@ CREATE TABLE "patch"(
     "production" TIMESTAMP DEFAULT NULL,
     "approved" CHAR(1) DEFAULT '0' CHECK( "approved" IN ('0', '1') ) NOT NULL,
     "created_by" INT NOT NULL,
-    "appproved_by" INT
+    "approved_by" INT
 );
 
 CREATE TABLE "ticket"(
