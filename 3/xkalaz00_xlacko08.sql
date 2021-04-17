@@ -231,7 +231,7 @@ WHERE t."id" = 1
 ORDER BY b."vulnerability";
 
 -- 3 tables
--- users who know Python
+-- List users who know Python
 SELECT
     u."name"
 FROM "user" u
