@@ -149,6 +149,8 @@ INSERT INTO "user"("name", "date_of_birth", "email", "type")
     VALUES('programmer1', TO_DATE('04-04-1977', 'dd/mm/yyyy'), 'programmer1@fake.co', 'programmer');
 INSERT INTO "user"("name", "date_of_birth", "address_country", "address_city", "address_street", "email", "type")
     VALUES('user1', TO_DATE('04-04-1977', 'dd/mm/yyyy'), 'hungary', 'nitra', 'purkynova 12', 'user1@fake.co', 'user');
+INSERT INTO "user"("name", "date_of_birth", "email", "type")
+    VALUES('programmer2', TO_DATE('04-04-1977', 'dd/mm/yyyy'), 'programmer2@fake.co', 'programmer');
 
 INSERT INTO "language"("name") VALUES('C++');
 INSERT INTO "language"("name") VALUES('Python');
@@ -222,7 +224,6 @@ ORDER BY p."created";
 -- 3 tables
 -- Bugs related to a specific ticket
 SELECT
-       t."title" AS "ticket",
        b."description" AS "bug",
        b."fixed"
 FROM "ticket" t
@@ -234,7 +235,7 @@ ORDER BY b."vulnerability";
 -- 3 tables
 -- Users who know Python
 SELECT
-    u."name"
+    u."name" AS "user"
 FROM "user" u
     JOIN "user_knows_language" ukl on u."id" = ukl."user"
     JOIN "language" l on ukl."language" = l."id"
@@ -244,7 +245,7 @@ ORDER BY u."id";
 -- GROUP BY with aggregate function
 -- Patches which touch more than one module (major patches?)
 SELECT
-       p."description",
+       p."description" AS "patch",
        COUNT(pfm."module") AS "modules touched"
 FROM "patch" p
     join "patch_for_module" pfm on p."id" = pfm."patch"
@@ -255,9 +256,19 @@ ORDER BY COUNT(pfm."module") DESC;
 -- EXISTS
 -- Users who know at least one language
 SELECT
-       u."name"
+       u."name" AS "user"
 FROM "user" u
 WHERE EXISTS(
     SELECT * FROM "user_knows_language" ukl WHERE ukl."user" = u."id"
+)
+ORDER BY u."id";
+
+-- IN + inner SELECT
+-- Users who haven't submitted any patches
+SELECT
+       u."name" AS "user"
+FROM "user" u
+WHERE u."id" NOT IN(
+    SELECT DISTINCT "created_by" FROM "patch"
 )
 ORDER BY u."id";
