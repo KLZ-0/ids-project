@@ -159,12 +159,15 @@ INSERT INTO "user_knows_language"("user", "language") VALUES(3, 2);
 
 INSERT INTO "module"("description") VALUES('Main module');
 INSERT INTO "module"("description") VALUES('GUI module');
+INSERT INTO "module"("description") VALUES('Utils');
 
 INSERT INTO "user_responsible_for_module"("user", "module") VALUES(2, 1);
 INSERT INTO "user_responsible_for_module"("user", "module") VALUES(2, 2);
+INSERT INTO "user_responsible_for_module"("user", "module") VALUES(2, 3);
 
 INSERT INTO "module_in_language"("module", "language") VALUES(1, 1);
 INSERT INTO "module_in_language"("module", "language") VALUES(2, 2);
+INSERT INTO "module_in_language"("module", "language") VALUES(3, 2);
 
 INSERT INTO "bug"("description") VALUES('bug1');
 INSERT INTO "bug"("description") VALUES('bug2');
@@ -199,7 +202,6 @@ UPDATE "bug" SET "referenced_in_patch" = 2 WHERE "id" = 3;
 
 -- 2 tables
 -- List not yet approved patches created by users (for stricter check)
--- ordered by patch creation date
 SELECT
        p."description" AS "patch_description",
        u."name" AS "author"
@@ -219,7 +221,6 @@ ORDER BY p."created";
 
 -- 3 tables
 -- List bugs related to a specific ticket (with id 1)
--- order by bug vulnerability
 SELECT
        t."title" AS "ticket",
        b."description" AS "bug",
@@ -239,3 +240,14 @@ FROM "user" u
     JOIN "language" l on ukl."language" = l."id"
 WHERE l."name" = 'Python'
 ORDER BY u."id";
+
+-- GROUP BY with aggregate function
+-- List modules with at least one bug
+SELECT
+       m."description",
+       COUNT(bim."bug") AS "bugs"
+FROM "module" m
+    JOIN "bug_in_module" bim on m."id" = bim."module"
+GROUP BY m."id", m."description"
+HAVING COUNT(bim."bug") >= 1
+ORDER BY COUNT(bim."bug") DESC;
