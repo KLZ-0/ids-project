@@ -242,15 +242,15 @@ WHERE l."name" = 'Python'
 ORDER BY u."id";
 
 -- GROUP BY with aggregate function
--- Modules with more than one bug
+-- Patches which touch more than one module (major patches?)
 SELECT
-       m."description",
-       COUNT(bim."bug") AS "bugs"
-FROM "module" m
-    JOIN "bug_in_module" bim on m."id" = bim."module"
-GROUP BY m."id", m."description"
-HAVING COUNT(bim."bug") > 1
-ORDER BY COUNT(bim."bug") DESC;
+       p."description",
+       COUNT(pfm."module") AS "modules touched"
+FROM "patch" p
+    join "patch_for_module" pfm on p."id" = pfm."patch"
+GROUP BY p."id", p."description"
+HAVING COUNT(pfm."module") > 1
+ORDER BY COUNT(pfm."module") DESC;
 
 -- EXISTS
 -- Users who know at least one language
