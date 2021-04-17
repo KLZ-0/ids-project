@@ -1,5 +1,5 @@
 ---------------------------------
--- IDS - Project part 2
+-- IDS - Project part 3
 -- Bug Tracker
 -- xkalaz00, xlacko08
 ---------------------------------
