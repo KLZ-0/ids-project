@@ -201,7 +201,7 @@ UPDATE "bug" SET "referenced_in_patch" = 2 WHERE "id" = 3;
 --- select
 
 -- 2 tables
--- List not yet approved patches created by users (for stricter check)
+-- Not yet approved patches created by casual users
 SELECT
        p."description" AS "patch_description",
        u."name" AS "author"
@@ -211,7 +211,7 @@ WHERE u."type" = 'user'
 ORDER BY p."created";
 
 -- 2 tables
--- List all bugs and in which patch were they referenced
+-- All bugs and in which patch were they referenced
 SELECT
        b."description" AS "bug",
        p."description" AS "referencing patch"
@@ -220,7 +220,7 @@ FROM "bug" b
 ORDER BY p."created";
 
 -- 3 tables
--- List bugs related to a specific ticket (with id 1)
+-- Bugs related to a specific ticket
 SELECT
        t."title" AS "ticket",
        b."description" AS "bug",
@@ -232,7 +232,7 @@ WHERE t."id" = 1
 ORDER BY b."vulnerability";
 
 -- 3 tables
--- List users who know Python
+-- Users who know Python
 SELECT
     u."name"
 FROM "user" u
@@ -242,7 +242,7 @@ WHERE l."name" = 'Python'
 ORDER BY u."id";
 
 -- GROUP BY with aggregate function
--- List modules with more than one bug
+-- Modules with more than one bug
 SELECT
        m."description",
        COUNT(bim."bug") AS "bugs"
