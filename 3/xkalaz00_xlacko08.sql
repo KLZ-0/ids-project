@@ -224,17 +224,6 @@ WHERE b."fixed" = 1
 ORDER BY p."created";
 
 -- 3 tables
--- Bugs related to a specific ticket
-SELECT
-       b."description" AS "bug",
-       b."fixed"
-FROM "ticket" t
-    JOIN "ticket_references_bug" trb on t."id" = trb."ticket"
-    JOIN "bug" b on b."id" = trb."bug"
-WHERE t."id" = 1
-ORDER BY b."vulnerability";
-
--- 3 tables
 -- Users who know Python
 SELECT
     u."name" AS "user"
