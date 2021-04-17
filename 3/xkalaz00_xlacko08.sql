@@ -242,12 +242,12 @@ WHERE l."name" = 'Python'
 ORDER BY u."id";
 
 -- GROUP BY with aggregate function
--- List modules with at least one bug
+-- List modules with more than one bug
 SELECT
        m."description",
        COUNT(bim."bug") AS "bugs"
 FROM "module" m
     JOIN "bug_in_module" bim on m."id" = bim."module"
 GROUP BY m."id", m."description"
-HAVING COUNT(bim."bug") >= 1
+HAVING COUNT(bim."bug") > 1
 ORDER BY COUNT(bim."bug") DESC;
