@@ -199,6 +199,7 @@ INSERT INTO "patch_for_module"("patch", "module") VALUES(1, 2);
 INSERT INTO "patch_for_module"("patch", "module") VALUES(2, 1);
 
 UPDATE "bug" SET "referenced_in_patch" = 2 WHERE "id" = 3;
+UPDATE "bug" SET "fixed" = 1 WHERE "id" = 3;
 
 --- select
 
@@ -213,12 +214,13 @@ WHERE u."type" = 'user'
 ORDER BY p."created";
 
 -- 2 tables
--- All bugs and in which patch were they referenced
+-- All fixed bugs and in which patch were they referenced
 SELECT
        b."description" AS "bug",
        p."description" AS "referencing patch"
 FROM "bug" b
     JOIN "patch" p on p."id" = b."referenced_in_patch"
+WHERE b."fixed" = 1
 ORDER BY p."created";
 
 -- 3 tables
