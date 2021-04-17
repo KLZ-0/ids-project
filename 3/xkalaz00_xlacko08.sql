@@ -251,3 +251,13 @@ FROM "module" m
 GROUP BY m."id", m."description"
 HAVING COUNT(bim."bug") > 1
 ORDER BY COUNT(bim."bug") DESC;
+
+-- EXISTS
+-- Users who know at least one language
+SELECT
+       u."name"
+FROM "user" u
+WHERE EXISTS(
+    SELECT * FROM "user_knows_language" ukl WHERE ukl."user" = u."id"
+)
+ORDER BY u."id";
