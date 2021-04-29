@@ -142,7 +142,7 @@ ALTER TABLE "ticket"
     FOREIGN KEY ("created_by")
     REFERENCES "user"("id") ON DELETE SET NULL;
 
---- triggers
+--- Triggers
 
 -- generate primary key for ticket
 CREATE SEQUENCE "ticket_seq";
@@ -163,6 +163,24 @@ BEGIN
     END IF;
 END;
 
+--- Privileges
+
+GRANT ALL ON "bug" TO XLACKO08;
+GRANT ALL ON "language" TO XLACKO08;
+GRANT ALL ON "module" TO XLACKO08;
+GRANT ALL ON "patch" TO XLACKO08;
+GRANT ALL ON "ticket" TO XLACKO08;
+GRANT ALL ON "user" TO XLACKO08;
+GRANT ALL ON "patch_approved_by" TO XLACKO08;
+GRANT ALL ON "patch_for_module" TO XLACKO08;
+GRANT ALL ON "bug_in_module" TO XLACKO08;
+GRANT ALL ON "ticket_references_bug" TO XLACKO08;
+GRANT ALL ON "user_knows_language" TO XLACKO08;
+GRANT ALL ON "module_in_language" TO XLACKO08;
+GRANT ALL ON "user_responsible_for_module" TO XLACKO08;
+
+-- TODO: Add privileges for procedures
+-- TODO: Add privileges for materialized view
 
 --- Insert
 
