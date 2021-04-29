@@ -19,6 +19,7 @@ DROP TABLE "patch" CASCADE CONSTRAINTS;
 DROP TABLE "ticket";
 DROP TABLE "user" CASCADE CONSTRAINTS;
 
+DROP SEQUENCE "ticket_seq";
 
 CREATE TABLE "bug"(
     "id" INT GENERATED AS IDENTITY NOT NULL PRIMARY KEY,
@@ -42,7 +43,7 @@ CREATE TABLE "module"(
 CREATE TABLE "patch"(
     "id" INT GENERATED AS IDENTITY NOT NULL PRIMARY KEY,
     "description" VARCHAR(1023) NOT NULL,
-    "created" TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "created" TIMESTAMP DEFAULT NULL,
     "production" TIMESTAMP DEFAULT NULL,
     "approved" CHAR(1) DEFAULT '0' CHECK( "approved" IN ('0', '1') ) NOT NULL,
     "created_by" INT NOT NULL
@@ -144,7 +145,6 @@ ALTER TABLE "ticket"
 --- triggers
 
 -- generate primary key for ticket
-
 CREATE SEQUENCE "ticket_seq";
 CREATE OR REPLACE TRIGGER "ticket_id_gen" BEFORE INSERT ON "ticket"
 FOR EACH ROW
@@ -153,6 +153,16 @@ BEGIN
         :NEW."id" := "ticket_seq".NEXTVAL;
     END IF;
 END;
+
+-- generate creation timestamp for patch
+CREATE OR REPLACE TRIGGER "patch_created_gen" BEFORE INSERT ON "patch"
+FOR EACH ROW
+BEGIN
+    IF :NEW."created" IS NULL THEN
+        :NEW."created" := CURRENT_TIMESTAMP;
+    END IF;
+END;
+
 
 --- Insert
 
