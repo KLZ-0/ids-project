@@ -1,5 +1,5 @@
 ---------------------------------
--- IDS - Project part 3
+-- IDS - Project part 4
 -- Bug Tracker
 -- xkalaz00, xlacko08
 ---------------------------------
@@ -49,7 +49,7 @@ CREATE TABLE "patch"(
 );
 
 CREATE TABLE "ticket"(
-    "id" INT GENERATED AS IDENTITY NOT NULL PRIMARY KEY,
+    "id" INT DEFAULT NULL PRIMARY KEY,
     "title" VARCHAR(80) NOT NULL,
     "description" VARCHAR(1023) NOT NULL,
     "severity" VARCHAR(10) DEFAULT 'low' CHECK( "severity" IN ('low', 'minor', 'major', 'critical') ) NOT NULL,
@@ -141,7 +141,20 @@ ALTER TABLE "ticket"
     FOREIGN KEY ("created_by")
     REFERENCES "user"("id") ON DELETE SET NULL;
 
+--- triggers
 
+-- generate primary key for ticket
+
+CREATE SEQUENCE "ticket_seq";
+CREATE OR REPLACE TRIGGER "ticket_id_gen" BEFORE INSERT ON "ticket"
+FOR EACH ROW
+BEGIN
+    IF :NEW."id" IS NULL THEN
+        :NEW."id" := "ticket_seq".NEXTVAL;
+    END IF;
+END;
+
+--- Insert
 
 INSERT INTO "user"("name", "date_of_birth", "email", "type")
     VALUES('admin', TO_DATE('04-04-1977', 'dd/mm/yyyy'), 'admin@fake.co', 'admin');
@@ -263,5 +276,3 @@ WHERE u."id" NOT IN(
     SELECT DISTINCT "created_by" FROM "patch"
 )
 ORDER BY u."id";
-
---- 
