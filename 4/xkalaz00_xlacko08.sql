@@ -21,6 +21,8 @@ DROP TABLE "user" CASCADE CONSTRAINTS;
 
 DROP SEQUENCE "ticket_seq";
 
+DROP MATERIALIZED VIEW "view_tickets";
+
 CREATE TABLE "bug"(
     "id" INT GENERATED AS IDENTITY NOT NULL PRIMARY KEY,
     "description" VARCHAR(1023) NOT NULL,
@@ -274,7 +276,17 @@ SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
 
 --- Materialized view
 
--- TODO
+-- materialized view of all tickets
+CREATE MATERIALIZED VIEW "view_tickets" AS
+SELECT
+    t."id",
+    t."title",
+    t."description",
+    t."status",
+    u."name" AS "created_by"
+FROM "ticket" t
+    join "user" u on t."created_by" = u."id"
+;
 
 --- Privileges
 
@@ -293,4 +305,12 @@ GRANT ALL ON "module_in_language" TO XLACKO08;
 GRANT ALL ON "user_responsible_for_module" TO XLACKO08;
 
 -- TODO: Add privileges for procedures
--- TODO: Add privileges for materialized view
+
+GRANT ALL ON "view_tickets" TO XLACKO08;
+
+--- Materialized view usage
+
+-- Display the view
+SELECT * FROM "view_tickets";
+
+-- TODO
