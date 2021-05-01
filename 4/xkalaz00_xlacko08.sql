@@ -163,9 +163,6 @@ BEGIN
     END IF;
 END;
 
--- TODO: trigger -> on add patch_approved_by set patch.approved
--- if all people responsible for all touched modules approved the patch
-
 --- Explain plan
 
 -- join two tables
