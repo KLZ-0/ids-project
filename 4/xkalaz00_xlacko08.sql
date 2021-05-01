@@ -196,6 +196,14 @@ HAVING COUNT(pfm."module") > 1
 ORDER BY COUNT(pfm."module") DESC;
 SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
 
+--- Procedures
+
+-- TODO
+
+--- Materialized view
+
+-- TODO
+
 --- Privileges
 
 GRANT ALL ON "bug" TO XLACKO08;
@@ -275,65 +283,6 @@ INSERT INTO "patch_for_module"("patch", "module") VALUES(2, 1);
 UPDATE "bug" SET "referenced_in_patch" = 2 WHERE "id" = 3;
 UPDATE "bug" SET "fixed" = 1 WHERE "id" = 3;
 
---- select
+--- Trigger usage
 
--- 2 tables
--- Not yet approved patches created by casual users
-SELECT
-       p."description" AS "patch_description",
-       u."name" AS "author"
-FROM "patch" p
-    JOIN "user" u on u."id" = p."created_by"
-WHERE u."type" = 'user'
-ORDER BY p."created";
-
--- 2 tables
--- All fixed bugs and in which patch were they referenced
-SELECT
-       b."description" AS "bug",
-       p."description" AS "referencing patch"
-FROM "bug" b
-    JOIN "patch" p on p."id" = b."referenced_in_patch"
-WHERE b."fixed" = 1
-ORDER BY p."created";
-
--- 3 tables
--- Users who know Python
-SELECT
-    u."name" AS "user"
-FROM "user" u
-    JOIN "user_knows_language" ukl on u."id" = ukl."user"
-    JOIN "language" l on ukl."language" = l."id"
-WHERE l."name" = 'Python'
-ORDER BY u."id";
-
--- GROUP BY with aggregate function
--- Patches which touch more than one module (major patches?)
-SELECT
-       p."description" AS "patch",
-       COUNT(pfm."module") AS "modules touched"
-FROM "patch" p
-    join "patch_for_module" pfm on p."id" = pfm."patch"
-GROUP BY p."id", p."description"
-HAVING COUNT(pfm."module") > 1
-ORDER BY COUNT(pfm."module") DESC;
-
--- EXISTS
--- Users who know at least one language
-SELECT
-       u."name" AS "user"
-FROM "user" u
-WHERE EXISTS(
-    SELECT * FROM "user_knows_language" ukl WHERE ukl."user" = u."id"
-)
-ORDER BY u."id";
-
--- IN + inner SELECT
--- Users who haven't submitted any patches
-SELECT
-       u."name" AS "user"
-FROM "user" u
-WHERE u."id" NOT IN(
-    SELECT DISTINCT "created_by" FROM "patch"
-)
-ORDER BY u."id";
+-- TODO
