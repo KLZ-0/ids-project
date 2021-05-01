@@ -235,6 +235,10 @@ UPDATE "bug" SET "fixed" = 1 WHERE "id" = 3;
 
 -- TODO
 
+--- Procedure usage
+
+-- TODO
+
 --- Explain plan
 
 -- join two tables
