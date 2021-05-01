@@ -169,7 +169,7 @@ END;
 
 -- TODO
 
---- Insert
+--- Insert + trigger usage
 
 INSERT INTO "user"("name", "date_of_birth", "email", "type")
     VALUES('admin', TO_DATE('04-04-1977', 'dd/mm/yyyy'), 'admin@fake.co', 'admin');
@@ -203,11 +203,17 @@ INSERT INTO "bug"("description") VALUES('bug1');
 INSERT INTO "bug"("description") VALUES('bug2');
 INSERT INTO "bug"("description", "vulnerability") VALUES('bug3', 'major');
 
+-- Trigger 1 -> auto-increments ids for the inserted tickets
+-- id 1
 INSERT INTO "ticket"("title", "description", "created_by")
     VALUES('bug report', 'found two bugs in the Main and GUI modules', 3);
 
+-- id 2
 INSERT INTO "ticket"("title", "description", "created_by", "status")
     VALUES('bug report 2', 'found bug3', 2, 'open');
+
+-- Trigger 1 PK values
+SELECT "id", "title" FROM "ticket" ORDER BY "id";
 
 INSERT INTO "ticket_references_bug"("ticket", "bug") VALUES(1, 1);
 INSERT INTO "ticket_references_bug"("ticket", "bug") VALUES(1, 2);
@@ -217,8 +223,12 @@ INSERT INTO "bug_in_module"("bug", "module") VALUES(1,1);
 INSERT INTO "bug_in_module"("bug", "module") VALUES(2,2);
 INSERT INTO "bug_in_module"("bug", "module") VALUES(3,1);
 
+-- Trigger 2 -> generate creation timestamp for the inserted patches
 INSERT INTO "patch"("description", "created_by") VALUES('patch for bug1 and bug2', 3);
 INSERT INTO "patch"("description", "created_by", "approved") VALUES('patch for bug3', 2, '1');
+
+-- Trigger 2 creation timestamp values
+SELECT "description", "created" FROM "patch" ORDER BY "id";
 
 INSERT INTO "patch_approved_by"("patch", "user") VALUES(2, 2);
 
@@ -232,10 +242,6 @@ UPDATE "bug" SET "fixed" = 1 WHERE "id" = 3;
 ------------------------------
 ----- DATABASE POPULATED -----
 ------------------------------
-
---- Trigger usage
-
--- TODO
 
 --- Procedure usage
 
