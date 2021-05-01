@@ -163,6 +163,42 @@ BEGIN
     END IF;
 END;
 
+-- TODO: trigger -> on add patch_approved_by set patch.approved
+-- if all people responsible for all touched modules approved the patch
+
+--- Explain plan
+
+-- join two tables
+-- group by with aggregate function
+-- Non-approved patches which touch more than one module
+EXPLAIN PLAN FOR
+SELECT
+       p."description" AS "patch",
+       COUNT(pfm."module") AS "modules touched"
+FROM "patch" p
+    join "patch_for_module" pfm on p."id" = pfm."patch"
+WHERE p."approved" = '0'
+GROUP BY p."id", p."description"
+HAVING COUNT(pfm."module") > 1
+ORDER BY COUNT(pfm."module") DESC;
+SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+
+-- create index for "approved"
+CREATE INDEX "index_approved" ON "patch" ("approved");
+
+-- re-explain plan
+EXPLAIN PLAN FOR
+SELECT
+       p."description" AS "patch",
+       COUNT(pfm."module") AS "modules touched"
+FROM "patch" p
+    join "patch_for_module" pfm on p."id" = pfm."patch"
+WHERE p."approved" = '0'
+GROUP BY p."id", p."description"
+HAVING COUNT(pfm."module") > 1
+ORDER BY COUNT(pfm."module") DESC;
+SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+
 --- Privileges
 
 GRANT ALL ON "bug" TO XLACKO08;
