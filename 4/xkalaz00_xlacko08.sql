@@ -276,7 +276,7 @@ SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
 
 --- Materialized view
 
--- materialized view of all tickets
+-- materialized view of all tickets ordered by their status
 CREATE MATERIALIZED VIEW "view_tickets" AS
 SELECT
     t."id",
@@ -286,7 +286,7 @@ SELECT
     u."name" AS "created_by"
 FROM "ticket" t
     join "user" u on t."created_by" = u."id"
-;
+ORDER BY "status";
 
 --- Privileges
 
@@ -312,5 +312,3 @@ GRANT ALL ON "view_tickets" TO XLACKO08;
 
 -- Display the view
 SELECT * FROM "view_tickets";
-
--- TODO
