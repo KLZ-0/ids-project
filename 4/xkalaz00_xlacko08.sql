@@ -163,65 +163,9 @@ BEGIN
     END IF;
 END;
 
---- Explain plan
-
--- join two tables
--- group by with aggregate function
--- Non-approved patches which touch more than one module
-EXPLAIN PLAN FOR
-SELECT
-       p."description" AS "patch",
-       COUNT(pfm."module") AS "modules touched"
-FROM "patch" p
-    join "patch_for_module" pfm on p."id" = pfm."patch"
-WHERE p."approved" = '0'
-GROUP BY p."id", p."description"
-HAVING COUNT(pfm."module") > 1
-ORDER BY COUNT(pfm."module") DESC;
-SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
-
--- create index for "approved"
-CREATE INDEX "index_approved" ON "patch" ("approved");
-
--- re-explain plan
-EXPLAIN PLAN FOR
-SELECT
-       p."description" AS "patch",
-       COUNT(pfm."module") AS "modules touched"
-FROM "patch" p
-    join "patch_for_module" pfm on p."id" = pfm."patch"
-WHERE p."approved" = '0'
-GROUP BY p."id", p."description"
-HAVING COUNT(pfm."module") > 1
-ORDER BY COUNT(pfm."module") DESC;
-SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
-
 --- Procedures
 
 -- TODO
-
---- Materialized view
-
--- TODO
-
---- Privileges
-
-GRANT ALL ON "bug" TO XLACKO08;
-GRANT ALL ON "language" TO XLACKO08;
-GRANT ALL ON "module" TO XLACKO08;
-GRANT ALL ON "patch" TO XLACKO08;
-GRANT ALL ON "ticket" TO XLACKO08;
-GRANT ALL ON "user" TO XLACKO08;
-GRANT ALL ON "patch_approved_by" TO XLACKO08;
-GRANT ALL ON "patch_for_module" TO XLACKO08;
-GRANT ALL ON "bug_in_module" TO XLACKO08;
-GRANT ALL ON "ticket_references_bug" TO XLACKO08;
-GRANT ALL ON "user_knows_language" TO XLACKO08;
-GRANT ALL ON "module_in_language" TO XLACKO08;
-GRANT ALL ON "user_responsible_for_module" TO XLACKO08;
-
--- TODO: Add privileges for procedures
--- TODO: Add privileges for materialized view
 
 --- Insert
 
@@ -283,6 +227,66 @@ INSERT INTO "patch_for_module"("patch", "module") VALUES(2, 1);
 UPDATE "bug" SET "referenced_in_patch" = 2 WHERE "id" = 3;
 UPDATE "bug" SET "fixed" = 1 WHERE "id" = 3;
 
+------------------------------
+----- DATABASE POPULATED -----
+------------------------------
+
 --- Trigger usage
 
 -- TODO
+
+--- Explain plan
+
+-- join two tables
+-- group by with aggregate function
+-- Non-approved patches which touch more than one module
+EXPLAIN PLAN FOR
+SELECT
+       p."description" AS "patch",
+       COUNT(pfm."module") AS "modules touched"
+FROM "patch" p
+    join "patch_for_module" pfm on p."id" = pfm."patch"
+WHERE p."approved" = '0'
+GROUP BY p."id", p."description"
+HAVING COUNT(pfm."module") > 1
+ORDER BY COUNT(pfm."module") DESC;
+SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+
+-- create index for "approved"
+CREATE INDEX "index_approved" ON "patch" ("approved");
+
+-- re-explain plan
+EXPLAIN PLAN FOR
+SELECT
+       p."description" AS "patch",
+       COUNT(pfm."module") AS "modules touched"
+FROM "patch" p
+    join "patch_for_module" pfm on p."id" = pfm."patch"
+WHERE p."approved" = '0'
+GROUP BY p."id", p."description"
+HAVING COUNT(pfm."module") > 1
+ORDER BY COUNT(pfm."module") DESC;
+SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+
+--- Materialized view
+
+-- TODO
+
+--- Privileges
+
+GRANT ALL ON "bug" TO XLACKO08;
+GRANT ALL ON "language" TO XLACKO08;
+GRANT ALL ON "module" TO XLACKO08;
+GRANT ALL ON "patch" TO XLACKO08;
+GRANT ALL ON "ticket" TO XLACKO08;
+GRANT ALL ON "user" TO XLACKO08;
+GRANT ALL ON "patch_approved_by" TO XLACKO08;
+GRANT ALL ON "patch_for_module" TO XLACKO08;
+GRANT ALL ON "bug_in_module" TO XLACKO08;
+GRANT ALL ON "ticket_references_bug" TO XLACKO08;
+GRANT ALL ON "user_knows_language" TO XLACKO08;
+GRANT ALL ON "module_in_language" TO XLACKO08;
+GRANT ALL ON "user_responsible_for_module" TO XLACKO08;
+
+-- TODO: Add privileges for procedures
+-- TODO: Add privileges for materialized view
