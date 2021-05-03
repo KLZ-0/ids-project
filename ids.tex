@@ -16,74 +16,109 @@
 \date{}
 
 \begin{document}
-	
-	\maketitle
 
-	\bigskip
+    \maketitle
 
-	\begin{center}
-		\textbf{\Large{Zadanie IUS č. 49 - Bug Tracker}}
-	\end{center}
+    \bigskip
 
-	Vytvořte informační systém pro hlášení a správů chyb a zranitelností systému.
-	Systém umožňuje uživatelům hlásit bugy, jejich závažnosti a moduly, ve kterých se vyskytly, ve formě tiketů.
-	Tikety mohou obsahovat hlášení o více než jednom bugu a stejný bug může být zahlášen více uživateli.
-	Bug může (ale nemusí) být zranitelností a v tomto případě zaevidujeme i potenciální míru nebezpečí zneužití této zranitelnosti.
-	V případě zahlášení bugů, odešle systém upozornění programátorovi, který zodpovídá za daný modul, přičemž může odpovídat za více modulů.
-	Programátor pak daný tiket zabere, přepne jeho stav na "V řešení" a začne pracovat na opravě ve formě Patche.
-	Patch je charakterizován datem vydání a musí být schválen programátorem zodpovědným za modul, které mohou být v různých programovacích jazycích.
-	Jeden Patch může řešit více bugů a současně řešit více tiketů a vztahuje se na několik modulů.
-	Samotní uživatelé mohou rovněž tvořit patche.
-	Takové patche však musí projít silnější kontrolou než jsou zavedeny do systému.
-	Kromě data vytvoření patche rovněž evidujte datum zavedení patche do ostrého provozu.
-	Každý uživatel a programátor je charakterizován základními informacemi (jméno, věk, apod.), ale současně i jazyky, kterými disponuje, apod.
-	V případě opravení bugů, mohou být uživatele upozorněni na danou opravu a případně být odměněni peněžní hodnotou (podle závažnosti bugu či zranitelnosti).
+    \begin{center}
+        \textbf{\Large{Zadanie IUS č. 49 - Bug Tracker}}
+    \end{center}
+
+    Vytvořte informační systém pro hlášení a správů chyb a zranitelností systému.
+    Systém umožňuje uživatelům hlásit bugy, jejich závažnosti a moduly, ve kterých se vyskytly, ve formě tiketů.
+    Tikety mohou obsahovat hlášení o více než jednom bugu a stejný bug může být zahlášen více uživateli.
+    Bug může (ale nemusí) být zranitelností a v tomto případě zaevidujeme i potenciální míru nebezpečí zneužití této zranitelnosti.
+    V případě zahlášení bugů, odešle systém upozornění programátorovi, který zodpovídá za daný modul, přičemž může odpovídat za více modulů.
+    Programátor pak daný tiket zabere, přepne jeho stav na "V řešení" a začne pracovat na opravě ve formě Patche.
+    Patch je charakterizován datem vydání a musí být schválen programátorem zodpovědným za modul, které mohou být v různých programovacích jazycích.
+    Jeden Patch může řešit více bugů a současně řešit více tiketů a vztahuje se na několik modulů.
+    Samotní uživatelé mohou rovněž tvořit patche.
+    Takové patche však musí projít silnější kontrolou než jsou zavedeny do systému.
+    Kromě data vytvoření patche rovněž evidujte datum zavedení patche do ostrého provozu.
+    Každý uživatel a programátor je charakterizován základními informacemi (jméno, věk, apod.), ale současně i jazyky, kterými disponuje, apod.
+    V případě opravení bugů, mohou být uživatele upozorněni na danou opravu a případně být odměněni peněžní hodnotou (podle závažnosti bugu či zranitelnosti).
 
 
-	\newpage
-	\section{Use case diagram}
-	\label{sec:use-case-diagram}
-	\begin{center}
-		\vspace*{\fill}
-		\includegraphics[width=0.9\linewidth]{UC_diagram.pdf}
-		\vspace*{\fill}
-	\end{center}
+    \newpage
 
-	\newpage
-	\section{Entity relationship diagram}
-	\label{sec:entity-relationship-diagram}
-	\begin{center}
-		\vspace*{\fill}
-		\includegraphics[width=0.95\linewidth]{ER_diagram.pdf}
-		\vspace*{\fill}
-	\end{center}
 
-	\newpage
-	\section{Popis diagramov}
-	\label{sec:popis-diagramov}
-	\subsection{Entity na správu užívateľov}
-	\label{subsec:entity-na-správu-užívateľov}
+    \section{Use case diagram}
+    \label{sec:use-case-diagram}
+    \begin{center}
+        \vspace*{\fill}
+        \includegraphics[width=0.9\linewidth]{UC_diagram.pdf}
+        \vspace*{\fill}
+    \end{center}
 
-	\begin{itemize}
-	\item \emph{Užívateľ} - vytvára tikety a patche
-	\item \emph{Programátor} - je špecializácia užívateľa + schvaľuje patche a zodpovedá za moduly
-	\end{itemize}
+    \newpage
 
-	\subsection{Entity na zaznamenávanie bugov}
-	\label{subsec:entity-na-zaznamenávanie-bugov}
 
-	\begin{itemize}
-	\item \emph{Ticket} - vytvára ho užívateľ ak nájde bug(y), je aktívny pokiaľ aspoň jeden z odkazovaných bugov je aktívny
-	\item \emph{Bug} - Chyba v systéme ktorá môže byť nahlásená viacerými užívateľmi (pomocou viacerých tiketov), podľa jeho závažnosti zaň môže byť vypísaná odmena
-	\item \emph{Patch} - Oprava bug(ov), musí byť schválený všetkými programátormi na ktorých moduly sa vzťahuje
-	\end{itemize}
+    \section{Entity relationship diagram}
+    \label{sec:entity-relationship-diagram}
+    \begin{center}
+        \vspace*{\fill}
+        \includegraphics[width=0.95\linewidth]{ER_diagram.pdf}
+        \vspace*{\fill}
+    \end{center}
 
-	\subsection{Doplnkové entity}
-	\label{subsec:doplnkové-entity}
+    \newpage
 
-	\begin{itemize}
-	\item \emph{Jazyk} - zoznam programovacích jazykov
-	\item \emph{Modul} - moduly systému - pri vytvorení bugu sa odošle notifikácia programátorovi ktorý zodpovedá za príslušný modul
-	\end{itemize}
+    \subsection{Drop existujúcich tabuliek}\label{subsec:drop-existujúcich-tabuliek}
+
+    Pred vytvorením nových databázových objektov sa vykoná DROP TABLE pre každú vytvorenú tabuľku, DROP SEQUENCE pre sekvenciu a DROP MATERIALIZED VIEW pre materializovaný pohľad aby nedochádzalo k redefinícii už existujúcich tabuliek.
+    Pri tabuľkách so závislosťami sa použije CASCADE CONSTRAINTS na odstránenie tabuľky a jej závislostí.
+
+    \subsection{Vytvorenie nových tabuliek (+alter table)}\label{subsec:vytvorenie-nových-tabulieknull+alter-tablenull}
+
+    Vytvoria sa tabuľky podľa špecifikácie ER diagramu.
+    Pre vzťahy many to many sa vytvorili nové pomocné tabuľky.
+    Pre vzťahy one to many sa iba pridali foreign key-s pomocou ALTER TABLE po vytvorení oboch tabuliek vzťahu.
+
+    \subsection{Triggery}\label{subsec:triggery}
+
+    Trigger 1 - ticket\_id\_gen
+    Slúži na automatické generovanie hodnôt primárneho kľúča tabuľky ticket podľa sekvencie ticket\_seq.
+    TODO: Trigger 2 - patch\_created\_gen
+    Podobný trigger-u 1, generuje hodnotu aktuálneho času do stĺpca created tabuľky patch.
+
+    \subsection{Naplnenie databázy}\label{subsec:naplnenie-databázy}
+
+    Po definovaní triggerov sa databáza naplní ukážkovými dátami (v tejto časti sql skriptu je aj ukážka použitia triggerov).
+
+    \subsection{Triggery - použitie}\label{subsec:triggery---použitie}
+
+    Trigger 1 - ticket\_id\_gen
+    Pred vykonaním INSERT-u do tabuľky ticket sa do stĺpca id vloží nasledujúca hodnota zo sekvencie.
+    TODO: Trigger 2 - patch\_created\_gen
+    Pred vykonaním INSERT-u do tabuľky patch sa do stĺpca created vygeneruje a vloží timestamp aktuálneho času.
+
+    \subsection{Procedúry}\label{subsec:procedúry}
+
+    Procedúra 1 - p\_display\_ticket\_info
+    Zobrazí informácie o tickete (podľa id) a bugoch na ktoré odkazuje.
+    Použije sa zavolaním "p\_display\_ticket\_info"(ticket\_id); kde ticket\_id je id ticketu na zobrazenie.
+
+    Procedúra 2 - p\_display\_module\_info
+    Zobrazí informácie o module (podľa id), v akých jazykoch je implementovaný a kto zaň zodpovedá.
+    Použije sa zavolaním "p\_display\_module\_info"(module\_id); kde module\_id je id modulu na zobrazenie.
+
+    \subsection{Explain plan + index}\label{subsec:explain-plan-+-index}
+
+    Pre ukážku EXPLAIN PLAN sme si zvolili SELECT doposiaľ neschválených pachov ktoré sa týkajú viac ako jedného modulu (u týchto patchov je možné predpokladať záujem viacerých programátorov)
+    Tento príkaz spojí 2 tabuľky, používa agregačnú funkciu COUNT a klauzulu GROUP BY podľa zadania
+
+    Pre zrýchlenie príkazu sme zaviedli nový index index\_approved na stĺpci approved tabuľky patch.
+
+    \subsection{Prístupové práva}\label{subsec:prístupové-práva}
+
+    Pre každú tabuľku a materializovaný pohľad je vykonaný príkaz GRANT s právami ALL.
+    Pre procedúry postačí právo execute, preto je pre každú procedúru vykonaný príkaz GRANT s právom EXECUTE.
+
+    \subsection{Materializovaný pohľad}\label{subsec:materializovaný-pohľad}
+
+    Vytvorili sme materializovaný pohľad ktorý zobrazí všetky tickety, kto ich vytvoril a zoradí ich podľa statusu.
+    Dáta v materializovanom pohľade sa neaktualizujú ak sa zmení hodnota v tabuľkách z ktorých je vytvorený.
+
 
 \end{document}
