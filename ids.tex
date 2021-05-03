@@ -98,11 +98,11 @@
 
     \begin{enumerate}
         \item \texttt{ticket\_id\_gen}
-        Pred vykonaním INSERT-u do tabuľky \texttt{ticket} sa do stĺpca \texttt{id} vloží nasledujúca hodnota zo sekvencie.
+        Pred vykonaním \texttt{INSERT}-u do tabuľky \texttt{ticket} sa do stĺpca \texttt{id} vloží nasledujúca hodnota zo sekvencie.
         \item \texttt{patch\_created\_gen}
-        Pred vykonaním INSERT-u do tabuľky \texttt{patch} sa do stĺpca \texttt{created} vygeneruje a vloží timestamp aktuálneho času.
+        Pred vykonaním \texttt{INSERT}-u do tabuľky \texttt{patch} sa do stĺpca \texttt{created} vygeneruje a vloží timestamp aktuálneho času.
         \item \texttt{notify\_programmer}
-        Po vykonaní INSERT-u sa odošle notifikácia programátorom (v našom programe implementované iba ako \texttt{DBMS\_OUTPUT.PUT\_LINE()}).
+        Po vykonaní \texttt{INSERT}-u sa odošle notifikácia programátorom (v našom programe implementované iba ako \texttt{DBMS\_OUTPUT.PUT\_LINE()}).
     \end{enumerate}
 
     \subsection{Procedúry}\label{subsec:procedúry}
