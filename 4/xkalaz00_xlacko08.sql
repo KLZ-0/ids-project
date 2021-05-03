@@ -272,7 +272,7 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('--------');
 EXCEPTION
     WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('An unexpected error occurred in p_display_ticket_info');
+        DBMS_OUTPUT.PUT_LINE('An unexpected error occurred in p_display_module_info');
 END;
 
 --- Insert + trigger usage
