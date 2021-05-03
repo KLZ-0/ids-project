@@ -167,7 +167,48 @@ END;
 
 --- Procedures
 
--- TODO
+-- display info about a ticket and info about its referenced bugs
+-- ticket_id - choose which ticket to display
+CREATE OR REPLACE PROCEDURE "p_display_ticket_info"("ticket_id" NUMBER)
+IS
+    CURSOR "bug_ref_cursor" IS
+        SELECT * FROM "ticket_references_bug" WHERE "ticket" = "ticket_id";
+    "bug_ref" "ticket_references_bug"%ROWTYPE;
+    "ticket_row" "ticket"%ROWTYPE;
+    "bug_row" "bug"%ROWTYPE;
+    "created_by" "user"."name"%TYPE;
+BEGIN
+    SELECT * INTO "ticket_row" FROM "ticket" WHERE "id" = "ticket_id";
+    SELECT "name" INTO "created_by" FROM "user" WHERE "id" = "ticket_row"."created_by";
+    DBMS_OUTPUT.PUT_LINE('--------DISPLAY---TICKET---INFO----------');
+    DBMS_OUTPUT.PUT_LINE('Ticket ID: ' || "ticket_id");
+    DBMS_OUTPUT.PUT_LINE('Title: ' || "ticket_row"."title");
+    DBMS_OUTPUT.PUT_LINE( 'Description: ' || "ticket_row"."description");
+    DBMS_OUTPUT.PUT_LINE('Severity: ' || "ticket_row"."severity");
+    DBMS_OUTPUT.PUT_LINE('Status: ' || "ticket_row"."status");
+    DBMS_OUTPUT.PUT_LINE('Created on: ' || "ticket_row"."created");
+    DBMS_OUTPUT.PUT_LINE('Created by: ' || "created_by");
+    DBMS_OUTPUT.PUT_LINE('----------REFERENCED---BUGS--------------');
+    OPEN "bug_ref_cursor";
+    LOOP
+        FETCH "bug_ref_cursor" INTO "bug_ref";
+        EXIT WHEN "bug_ref_cursor"%NOTFOUND;
+        SELECT * INTO "bug_row" FROM "bug" WHERE "id" = "bug_ref"."bug";
+        DBMS_OUTPUT.PUT_LINE('Bug ID: ' || "bug_row"."id");
+        DBMS_OUTPUT.PUT_LINE('Description: ' || "bug_row"."description");
+        DBMS_OUTPUT.PUT_LINE('Vulnerability: ' || "bug_row"."vulnerability");
+        IF ("bug_row"."fixed" = '1') THEN DBMS_OUTPUT.PUT_LINE('Fixed: Yes');
+            ELSE DBMS_OUTPUT.PUT_LINE('Fixed: No');
+        END IF;
+        DBMS_OUTPUT.PUT_LINE('--------');
+    end loop;
+    CLOSE "bug_ref_cursor";
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('An unexpected error occurred in p_display_ticket_info');
+END;
+
+-- TODO second procedure
 
 --- Insert + trigger usage
 
@@ -245,7 +286,14 @@ UPDATE "bug" SET "fixed" = 1 WHERE "id" = 3;
 
 --- Procedure usage
 
--- TODO
+-- display info about the ticket with id = 1
+DECLARE
+    ticket_id NUMBER := 1;
+BEGIN
+    "p_display_ticket_info"(ticket_id);
+END;
+
+-- TODO second procedure call
 
 --- Explain plan
 
@@ -310,7 +358,8 @@ GRANT ALL ON "user_knows_language" TO XLACKO08;
 GRANT ALL ON "module_in_language" TO XLACKO08;
 GRANT ALL ON "user_responsible_for_module" TO XLACKO08;
 
--- TODO: Add privileges for procedures
+GRANT ALL ON "p_display_ticket_info" TO XLACKO08;
+-- TODO: Add privilege for second procedur
 
 GRANT ALL ON "view_tickets" TO XLACKO08;
 
