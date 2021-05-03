@@ -66,14 +66,14 @@
 
     \subsection{Drop existujúcich tabuliek}\label{subsec:drop-existujúcich-tabuliek}
 
-    Pred vytvorením nových databázových objektov sa vykoná DROP TABLE pre každú vytvorenú tabuľku, DROP SEQUENCE pre sekvenciu a DROP MATERIALIZED VIEW pre materializovaný pohľad aby nedochádzalo k redefinícii už existujúcich tabuliek.
-    Pri tabuľkách so závislosťami sa použije CASCADE CONSTRAINTS na odstránenie tabuľky a jej závislostí.
+    Pred vytvorením nových databázových objektov sa vykoná \texttt{DROP TABLE} pre každú vytvorenú tabuľku, \texttt{DROP SEQUENCE} pre sekvenciu a \texttt{DROP MATERIALIZED VIEW} pre materializovaný pohľad aby nedochádzalo k redefinícii už existujúcich tabuliek.
+    Pri tabuľkách so závislosťami sa použije \texttt{CASCADE CONSTRAINTS} na odstránenie tabuľky a jej závislostí.
 
-    \subsection{Vytvorenie nových tabuliek (+alter table)}\label{subsec:vytvorenie-nových-tabulieknull+alter-tablenull}
+    \subsection{Vytvorenie nových tabuliek}\label{subsec:vytvorenie-nových-tabulieknull}
 
-    Vytvoria sa tabuľky podľa špecifikácie ER diagramu.
+    Vytvoria sa tabuľky podľa špecifikácie ER diagramu zo sekcie~\ref{sec:entity-relationship-diagram}.
     Pre vzťahy many to many sa vytvorili nové pomocné tabuľky.
-    Pre vzťahy one to many sa iba pridali foreign key-s pomocou ALTER TABLE po vytvorení oboch tabuliek vzťahu.
+    Pre vzťahy one to many sa iba pridali codzie kľúče pomocou \texttt{ALTER TABLE} po vytvorení oboch tabuliek vzťahu.
 
     \subsection{Triggery}\label{subsec:triggery}
 
