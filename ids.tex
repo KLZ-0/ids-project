@@ -80,9 +80,11 @@
     \begin{enumerate}
         \item \texttt{ticket\_id\_gen}
         Slúži na automatické generovanie hodnôt primárneho kľúča tabuľky \texttt{ticket} podľa sekvencie \texttt{ticket\_seq}.
-%        TODO
         \item \texttt{patch\_created\_gen}
         Podobný trigger-u 1, generuje hodnotu aktuálneho času do stĺpca \texttt{created} tabuľky \texttt{patch}.
+        \item \texttt{notify\_programmer}
+        V prípade vytvorenia nového bugu notifikuje programátorov zodpovedných za modul v ktorom sa bug vyskytol.
+        Notifikuje programátorov zodpovedných za modul ak je vytvorený nový bug.
     \end{enumerate}
 
     \subsection{Naplnenie databázy}\label{subsec:naplnenie-databázy}
@@ -94,9 +96,10 @@
     \begin{enumerate}
         \item \texttt{ticket\_id\_gen}
         Pred vykonaním INSERT-u do tabuľky \texttt{ticket} sa do stĺpca \texttt{id} vloží nasledujúca hodnota zo sekvencie.
-%        TODO
         \item \texttt{patch\_created\_gen}
         Pred vykonaním INSERT-u do tabuľky \texttt{patch} sa do stĺpca \texttt{created} vygeneruje a vloží timestamp aktuálneho času.
+        \item \texttt{notify\_programmer}
+        Po vykonaní INSERT-u sa odošle notifikácia programátorom (v našom programe implementované iba ako \texttt{DBMS\_OUTPUT.PUT\_LINE()}).
     \end{enumerate}
 
     \subsection{Procedúry}\label{subsec:procedúry}
@@ -112,6 +115,7 @@
     \end{enumerate}
 
     \subsection{Explain plan a index}\label{subsec:explain-plan-+-index}
+%    TODO: add more content here
 
     Pre ukážku EXPLAIN PLAN sme si zvolili SELECT doposiaľ neschválených pachov ktoré sa týkajú viac ako jedného modulu (u týchto patchov je možné predpokladať záujem viacerých programátorov)
     Tento príkaz spojí 2 tabuľky, používa agregačnú funkciu \texttt{COUNT} a klauzulu \texttt{GROUP BY} podľa zadania.
