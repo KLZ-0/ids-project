@@ -165,6 +165,30 @@ BEGIN
     END IF;
 END;
 
+-- notify the responsible about a new bug in a given module
+CREATE OR REPLACE TRIGGER "notify_programmer" AFTER INSERT ON "bug_in_module"
+FOR EACH ROW
+DECLARE
+    CURSOR "user_cursor" IS
+        SELECT * FROM "user_responsible_for_module" WHERE "module" = :NEW."module";
+    "module_user" "user_responsible_for_module"%ROWTYPE;
+    "user_row" "user"%ROWTYPE;
+BEGIN
+    OPEN "user_cursor";
+    LOOP
+        FETCH "user_cursor" INTO "module_user";
+        EXIT WHEN "user_cursor"%NOTFOUND;
+        SELECT * INTO "user_row" FROM "user" WHERE "id" = "module_user"."user";
+        -- In the real world we could send an e-mail using UTL_SMTP here for example
+        DBMS_OUTPUT.PUT_LINE('User id:' || "user_row"."id" || ' name:' || "user_row"."name"
+                                 || ' notified about new bug id:' || :NEW."bug"
+                                 || ' in module id:' || :NEW."module");
+        DBMS_OUTPUT.PUT_LINE('Email sent to ' || "user_row"."email");
+    END LOOP;
+    CLOSE "user_cursor";
+END;
+
+
 --- Procedures
 
 -- display info about a ticket and info about its referenced bugs
@@ -303,6 +327,7 @@ INSERT INTO "ticket_references_bug"("ticket", "bug") VALUES(1, 1);
 INSERT INTO "ticket_references_bug"("ticket", "bug") VALUES(1, 2);
 INSERT INTO "ticket_references_bug"("ticket", "bug") VALUES(2, 3);
 
+-- Trigger 3 -> Responsible user gets notified about a new bug in module
 INSERT INTO "bug_in_module"("bug", "module") VALUES(1,1);
 INSERT INTO "bug_in_module"("bug", "module") VALUES(2,2);
 INSERT INTO "bug_in_module"("bug", "module") VALUES(3,1);
@@ -341,7 +366,7 @@ DECLARE
     module_id INT := 3;
 BEGIN
     "p_display_module_info"(module_id);
-end;
+END;
 
 --- Explain plan
 
