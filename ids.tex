@@ -81,11 +81,11 @@
     \subsection{Triggery\ -\ vytvorenie}\label{subsec:triggery}
 
     \begin{enumerate}
-        \item \texttt{ticket\_id\_gen}
+        \item \texttt{ticket\_id\_gen} -
         Slúži na automatické generovanie hodnôt primárneho kľúča tabuľky \texttt{ticket} podľa sekvencie \texttt{ticket\_seq}.
-        \item \texttt{patch\_created\_gen}
+        \item \texttt{patch\_created\_gen} -
         Podobný trigger-u 1, generuje hodnotu aktuálneho času do stĺpca \texttt{created} tabuľky \texttt{patch}.
-        \item \texttt{notify\_programmer}
+        \item \texttt{notify\_programmer} -
         V prípade vytvorenia nového bugu notifikuje programátorov zodpovedných za modul v ktorom sa bug vyskytol.
         Notifikuje programátorov zodpovedných za modul ak je vytvorený nový bug.
     \end{enumerate}
@@ -97,22 +97,22 @@
     \subsection{Triggery\ -\ použitie}\label{subsec:triggery---použitie}
 
     \begin{enumerate}
-        \item \texttt{ticket\_id\_gen}
+        \item \texttt{ticket\_id\_gen} -
         Pred vykonaním \texttt{INSERT}-u do tabuľky \texttt{ticket} sa do stĺpca \texttt{id} vloží nasledujúca hodnota zo sekvencie.
-        \item \texttt{patch\_created\_gen}
+        \item \texttt{patch\_created\_gen} -
         Pred vykonaním \texttt{INSERT}-u do tabuľky \texttt{patch} sa do stĺpca \texttt{created} vygeneruje a vloží timestamp aktuálneho času.
-        \item \texttt{notify\_programmer}
+        \item \texttt{notify\_programmer} -
         Po vykonaní \texttt{INSERT}-u sa odošle notifikácia programátorom (v našom programe implementované iba ako \texttt{DBMS\_OUTPUT.PUT\_LINE()}).
     \end{enumerate}
 
     \subsection{Procedúry}\label{subsec:procedúry}
 
     \begin{enumerate}
-        \item \texttt{p\_display\_ticket\_info}
+        \item \texttt{p\_display\_ticket\_info} -
         Zobrazí informácie o tickete (podľa id) a bugoch na ktoré odkazuje.
         Použije sa zavolaním \texttt{"p\_display\_ticket\_info"(ticket\_id);} kde \texttt{ticket\_id} je id ticketu na zobrazenie.
 
-        \item \texttt{p\_display\_module\_info}
+        \item \texttt{p\_display\_module\_info} -
         Zobrazí informácie o module (podľa id), v akých jazykoch je implementovaný a kto zaň zodpovedá.
         Použije sa zavolaním \texttt{"p\_display\_module\_info"(module\_id);} kde \texttt{module\_id} je id modulu na zobrazenie.
     \end{enumerate}
