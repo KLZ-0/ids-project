@@ -77,10 +77,13 @@
 
     \subsection{Triggery}\label{subsec:triggery}
 
-    Trigger 1 - ticket\_id\_gen
-    Slúži na automatické generovanie hodnôt primárneho kľúča tabuľky ticket podľa sekvencie ticket\_seq.
-    TODO: Trigger 2 - patch\_created\_gen
-    Podobný trigger-u 1, generuje hodnotu aktuálneho času do stĺpca created tabuľky patch.
+    \begin{enumerate}
+        \item \texttt{ticket\_id\_gen}
+        Slúži na automatické generovanie hodnôt primárneho kľúča tabuľky \texttt{ticket} podľa sekvencie \texttt{ticket\_seq}.
+%        TODO
+        \item \texttt{patch\_created\_gen}
+        Podobný trigger-u 1, generuje hodnotu aktuálneho času do stĺpca \texttt{created} tabuľky \texttt{patch}.
+    \end{enumerate}
 
     \subsection{Naplnenie databázy}\label{subsec:naplnenie-databázy}
 
@@ -88,10 +91,13 @@
 
     \subsection{Triggery - použitie}\label{subsec:triggery---použitie}
 
-    Trigger 1 - ticket\_id\_gen
-    Pred vykonaním INSERT-u do tabuľky ticket sa do stĺpca id vloží nasledujúca hodnota zo sekvencie.
-    TODO: Trigger 2 - patch\_created\_gen
-    Pred vykonaním INSERT-u do tabuľky patch sa do stĺpca created vygeneruje a vloží timestamp aktuálneho času.
+    \begin{enumerate}
+        \item \texttt{ticket\_id\_gen}
+        Pred vykonaním INSERT-u do tabuľky \texttt{ticket} sa do stĺpca \texttt{id} vloží nasledujúca hodnota zo sekvencie.
+%        TODO
+        \item \texttt{patch\_created\_gen}
+        Pred vykonaním INSERT-u do tabuľky \texttt{patch} sa do stĺpca \texttt{created} vygeneruje a vloží timestamp aktuálneho času.
+    \end{enumerate}
 
     \subsection{Procedúry}\label{subsec:procedúry}
 
