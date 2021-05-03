@@ -1,0 +1,83 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[left=1.8cm, text={18cm, 25cm}, top=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[czech]{babel}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=black,urlcolor=black,bookmarksopen=true,unicode=true]{hyperref}
+\usepackage{bookmark}
+\usepackage{graphicx}
+
+\graphicspath{{fig/}}
+
+\title{\includegraphics[width=0.4\linewidth]{logo_en.png}\vspace{1cm}\\\huge{Projekt IDS\\2020/2021}\\\vspace{1cm}1. část - Datový model (ERD), model případů užití}
+\author{Adrián Kálazi, Kevin Lackó\\xkalaz00, xlacko08}
+\date{}
+
+\begin{document}
+	
+	\maketitle
+
+	\bigskip
+
+	\begin{center}
+		\textbf{\Large{Zadanie IUS č. 49 - Bug Tracker}}
+	\end{center}
+
+	Vytvořte informační systém pro hlášení a správů chyb a zranitelností systému.
+	Systém umožňuje uživatelům hlásit bugy, jejich závažnosti a moduly, ve kterých se vyskytly, ve formě tiketů.
+	Tikety mohou obsahovat hlášení o více než jednom bugu a stejný bug může být zahlášen více uživateli.
+	Bug může (ale nemusí) být zranitelností a v tomto případě zaevidujeme i potenciální míru nebezpečí zneužití této zranitelnosti.
+	V případě zahlášení bugů, odešle systém upozornění programátorovi, který zodpovídá za daný modul, přičemž může odpovídat za více modulů.
+	Programátor pak daný tiket zabere, přepne jeho stav na "V řešení" a začne pracovat na opravě ve formě Patche.
+	Patch je charakterizován datem vydání a musí být schválen programátorem zodpovědným za modul, které mohou být v různých programovacích jazycích.
+	Jeden Patch může řešit více bugů a současně řešit více tiketů a vztahuje se na několik modulů.
+	Samotní uživatelé mohou rovněž tvořit patche.
+	Takové patche však musí projít silnější kontrolou než jsou zavedeny do systému.
+	Kromě data vytvoření patche rovněž evidujte datum zavedení patche do ostrého provozu.
+	Každý uživatel a programátor je charakterizován základními informacemi (jméno, věk, apod.), ale současně i jazyky, kterými disponuje, apod.
+	V případě opravení bugů, mohou být uživatele upozorněni na danou opravu a případně být odměněni peněžní hodnotou (podle závažnosti bugu či zranitelnosti).
+
+
+	\newpage
+	\section{Use case diagram}
+	\begin{center}
+		\vspace*{\fill}
+		\includegraphics[width=0.9\linewidth]{UC_diagram.pdf}
+		\vspace*{\fill}
+	\end{center}
+
+	\newpage
+	\section{Entity relationship diagram}
+	\begin{center}
+		\vspace*{\fill}
+		\includegraphics[width=0.95\linewidth]{ER_diagram.pdf}
+		\vspace*{\fill}
+	\end{center}
+
+	\newpage
+	\section{Popis diagramov}
+	\subsection{Entity na správu užívateľov}
+
+	\begin{itemize}
+	\item \emph{Užívateľ} - vytvára tikety a patche
+	\item \emph{Programátor} - je špecializácia užívateľa + schvaľuje patche a zodpovedá za moduly
+	\end{itemize}
+
+	\subsection{Entity na zaznamenávanie bugov}
+
+	\begin{itemize}
+	\item \emph{Ticket} - vytvára ho užívateľ ak nájde bug(y), je aktívny pokiaľ aspoň jeden z odkazovaných bugov je aktívny
+	\item \emph{Bug} - Chyba v systéme ktorá môže byť nahlásená viacerými užívateľmi (pomocou viacerých tiketov), podľa jeho závažnosti zaň môže byť vypísaná odmena
+	\item \emph{Patch} - Oprava bug(ov), musí byť schválený všetkými programátormi na ktorých moduly sa vzťahuje
+	\end{itemize}
+
+	\subsection{Doplnkové entity}
+
+	\begin{itemize}
+	\item \emph{Jazyk} - zoznam programovacích jazykov
+	\item \emph{Modul} - moduly systému - pri vytvorení bugu sa odošle notifikácia programátorovi ktorý zodpovedá za príslušný modul
+	\end{itemize}
+
+\end{document}
