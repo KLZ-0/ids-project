@@ -118,16 +118,16 @@
     \end{enumerate}
 
     \subsection{Explain plan a index}\label{subsec:explain-plan-+-index}
-%    TODO: add more content here
-
     Pre ukážku EXPLAIN PLAN sme si zvolili SELECT doposiaľ neschválených patchov ktoré sa týkajú viac ako jedného modulu (u týchto patchov je možné predpokladať záujem viacerých programátorov).
     Tento príkaz spojí 2 tabuľky, používa agregačnú funkciu \texttt{COUNT} a klauzulu \texttt{GROUP BY} podľa zadania.
 
-    Pôvodný príkaz je neoptimálny z dôvodu ...
+    Pôvodný príkaz je neoptimálny z dôvodu dvoch vnorených cycklov (čo je vidieť z výstupu \texttt{EXPLAIN PLAN}).
 
     Pre zrýchlenie príkazu sme zaviedli nový index \texttt{index\_approved} na stĺpci \texttt{approved} tabuľky \texttt{patch}.
+    Tento index používa B strom (default index u Oracle databáze).
 
-    Príkaz s použitím indexu je lepší lebo index ...
+    Príkaz s použitím indexu je lepší lebo použije namiesto vnorených cyklov \texttt{HASH JOIN} čo je rýchlejšia operácia a teda značne zníži CPU cost príkazu hlavne pri práci s väčším objemom dát.
+    Rozdiel je vidieť pri porovnaní výstupov z oboch volaní \texttt{EXPLAIN PLAN}.
 
     \subsection{Prístupové práva}\label{subsec:prístupové-práva}
 
