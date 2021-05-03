@@ -167,7 +167,89 @@ END;
 
 --- Procedures
 
--- TODO
+-- display info about a ticket and info about its referenced bugs
+-- ticket_id - choose which ticket to display
+CREATE OR REPLACE PROCEDURE "p_display_ticket_info"("ticket_id" INT)
+IS
+    CURSOR "bug_ref_cursor" IS
+        SELECT * FROM "ticket_references_bug" WHERE "ticket" = "ticket_id";
+    "bug_ref" "ticket_references_bug"%ROWTYPE;
+    "ticket_row" "ticket"%ROWTYPE;
+    "bug_row" "bug"%ROWTYPE;
+    "created_by" "user"."name"%TYPE;
+BEGIN
+    SELECT * INTO "ticket_row" FROM "ticket" WHERE "id" = "ticket_id";
+    SELECT "name" INTO "created_by" FROM "user" WHERE "id" = "ticket_row"."created_by";
+    DBMS_OUTPUT.PUT_LINE('--------DISPLAY---TICKET---INFO----------');
+    DBMS_OUTPUT.PUT_LINE('Ticket ID: ' || "ticket_id");
+    DBMS_OUTPUT.PUT_LINE('Title: ' || "ticket_row"."title");
+    DBMS_OUTPUT.PUT_LINE( 'Description: ' || "ticket_row"."description");
+    DBMS_OUTPUT.PUT_LINE('Severity: ' || "ticket_row"."severity");
+    DBMS_OUTPUT.PUT_LINE('Status: ' || "ticket_row"."status");
+    DBMS_OUTPUT.PUT_LINE('Created on: ' || "ticket_row"."created");
+    DBMS_OUTPUT.PUT_LINE('Created by: ' || "created_by");
+    DBMS_OUTPUT.PUT_LINE('----------REFERENCED---BUGS--------------');
+    OPEN "bug_ref_cursor";
+    LOOP
+        FETCH "bug_ref_cursor" INTO "bug_ref";
+        EXIT WHEN "bug_ref_cursor"%NOTFOUND;
+        SELECT * INTO "bug_row" FROM "bug" WHERE "id" = "bug_ref"."bug";
+        DBMS_OUTPUT.PUT_LINE('Bug ID: ' || "bug_row"."id");
+        DBMS_OUTPUT.PUT_LINE('Description: ' || "bug_row"."description");
+        DBMS_OUTPUT.PUT_LINE('Vulnerability: ' || "bug_row"."vulnerability");
+        IF ("bug_row"."fixed" = '1') THEN DBMS_OUTPUT.PUT_LINE('Fixed: Yes');
+            ELSE DBMS_OUTPUT.PUT_LINE('Fixed: No');
+        END IF;
+        DBMS_OUTPUT.PUT_LINE('--------');
+    END LOOP;
+    CLOSE "bug_ref_cursor";
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('An unexpected error occurred in p_display_ticket_info');
+END;
+
+-- display info about a module; languages used; who's responsible for it;
+-- module_id - choose which module to display
+CREATE OR REPLACE PROCEDURE "p_display_module_info"("module_id" INT)
+IS
+    CURSOR "lang_cursor" IS
+        SELECT * FROM "module_in_language" WHERE "module" = "module_id";
+    "module_language" "module_in_language"%ROWTYPE;
+    "lang_name" "language"."name"%TYPE;
+    CURSOR "user_cursor" IS
+        SELECT * FROM "user_responsible_for_module" WHERE "module" = "module_id";
+    "module_user" "user_responsible_for_module"%ROWTYPE;
+    "user_row" "user"%ROWTYPE;
+    "module_desc" "module"."description"%TYPE;
+BEGIN
+    SELECT "description" INTO "module_desc" FROM "module" WHERE "id" = "module_id";
+    DBMS_OUTPUT.PUT_LINE('--------DISPLAY---MODULE---INFO----------');
+    DBMS_OUTPUT.PUT_LINE('Module ID: ' || "module_id");
+    DBMS_OUTPUT.PUT_LINE('Description: ' || "module_desc");
+    DBMS_OUTPUT.PUT_LINE('Languages:');
+
+    OPEN "lang_cursor";
+    LOOP
+        FETCH "lang_cursor" INTO "module_language";
+        EXIT WHEN "lang_cursor"%NOTFOUND;
+        SELECT "name" INTO "lang_name" FROM "language" WHERE "id" = "module_language"."language";
+        DBMS_OUTPUT.PUT_LINE('    ' || "lang_name");
+    end loop;
+    CLOSE "lang_cursor";
+    DBMS_OUTPUT.PUT_LINE('Users responsible for module:');
+    OPEN "user_cursor";
+    LOOP
+        FETCH "user_cursor" INTO "module_user";
+        EXIT WHEN "user_cursor"%NOTFOUND;
+        SELECT * INTO "user_row" FROM "user" WHERE "id" = "module_user"."user";
+        DBMS_OUTPUT.PUT_LINE('    Id:' || "user_row"."id" || ' Name:' || "user_row"."name");
+    END LOOP;
+    CLOSE "user_cursor";
+    DBMS_OUTPUT.PUT_LINE('--------');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('An unexpected error occurred in p_display_ticket_info');
+END;
 
 --- Insert + trigger usage
 
@@ -194,9 +276,11 @@ INSERT INTO "module"("description") VALUES('Utils');
 INSERT INTO "user_responsible_for_module"("user", "module") VALUES(2, 1);
 INSERT INTO "user_responsible_for_module"("user", "module") VALUES(2, 2);
 INSERT INTO "user_responsible_for_module"("user", "module") VALUES(2, 3);
+INSERT INTO "user_responsible_for_module"("user", "module") VALUES(4, 3);
 
 INSERT INTO "module_in_language"("module", "language") VALUES(1, 1);
 INSERT INTO "module_in_language"("module", "language") VALUES(2, 2);
+INSERT INTO "module_in_language"("module", "language") VALUES(3, 1);
 INSERT INTO "module_in_language"("module", "language") VALUES(3, 2);
 
 INSERT INTO "bug"("description") VALUES('bug1');
@@ -245,7 +329,19 @@ UPDATE "bug" SET "fixed" = 1 WHERE "id" = 3;
 
 --- Procedure usage
 
--- TODO
+-- display info about the ticket with id = 1
+DECLARE
+    ticket_id INT := 1;
+BEGIN
+    "p_display_ticket_info"(ticket_id);
+END;
+
+-- display info about the module with id = 3
+DECLARE
+    module_id INT := 3;
+BEGIN
+    "p_display_module_info"(module_id);
+end;
 
 --- Explain plan
 
@@ -310,7 +406,8 @@ GRANT ALL ON "user_knows_language" TO XLACKO08;
 GRANT ALL ON "module_in_language" TO XLACKO08;
 GRANT ALL ON "user_responsible_for_module" TO XLACKO08;
 
--- TODO: Add privileges for procedures
+GRANT EXECUTE ON "p_display_ticket_info" TO XLACKO08;
+GRANT EXECUTE ON "p_display_module_info" TO XLACKO08;
 
 GRANT ALL ON "view_tickets" TO XLACKO08;
 
