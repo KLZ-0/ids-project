@@ -107,7 +107,7 @@
         \item \texttt{patch\_created\_gen} -
         Pred vykonaním \texttt{INSERT}-u do tabuľky \texttt{patch} sa do stĺpca \texttt{created} vygeneruje a vloží timestamp aktuálneho času.
         \item \texttt{notify\_programmer} -
-        Po vykonaní \texttt{INSERT}-u sa odošle notifikácia programátorom (v našom programe implementované iba ako \texttt{DBMS\_OUTPUT.PUT\_LINE()}).
+        Po vykonaní \texttt{INSERT}-u sa odošle notifikácia programátorom (v našom programe implementované iba ako \texttt{DBMS\_OUTPUT.PUT\_LINE()} ale môže sa pridať aj odosielanie emailov cez SMTP server).
     \end{enumerate}
 
     \subsection{Procedúry}\label{subsec:procedúry}
