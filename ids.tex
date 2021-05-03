@@ -75,7 +75,7 @@
     Pre vzťahy many to many sa vytvorili nové pomocné tabuľky.
     Pre vzťahy one to many sa iba pridali codzie kľúče pomocou \texttt{ALTER TABLE} po vytvorení oboch tabuliek vzťahu.
 
-    \subsection{Triggery}\label{subsec:triggery}
+    \subsection{Triggery\ -\ vytvorenie}\label{subsec:triggery}
 
     \begin{enumerate}
         \item \texttt{ticket\_id\_gen}
@@ -89,7 +89,7 @@
 
     Po definovaní triggerov sa databáza naplní ukážkovými dátami (v tejto časti sql skriptu je aj ukážka použitia triggerov).
 
-    \subsection{Triggery - použitie}\label{subsec:triggery---použitie}
+    \subsection{Triggery\ -\ použitie}\label{subsec:triggery---použitie}
 
     \begin{enumerate}
         \item \texttt{ticket\_id\_gen}
@@ -111,22 +111,21 @@
         Použije sa zavolaním \texttt{"p\_display\_module\_info"(module\_id);} kde \texttt{module\_id} je id modulu na zobrazenie.
     \end{enumerate}
 
-    \subsection{Explain plan + index}\label{subsec:explain-plan-+-index}
+    \subsection{Explain plan a index}\label{subsec:explain-plan-+-index}
 
     Pre ukážku EXPLAIN PLAN sme si zvolili SELECT doposiaľ neschválených pachov ktoré sa týkajú viac ako jedného modulu (u týchto patchov je možné predpokladať záujem viacerých programátorov)
-    Tento príkaz spojí 2 tabuľky, používa agregačnú funkciu COUNT a klauzulu GROUP BY podľa zadania
+    Tento príkaz spojí 2 tabuľky, používa agregačnú funkciu \texttt{COUNT} a klauzulu \texttt{GROUP BY} podľa zadania.
 
-    Pre zrýchlenie príkazu sme zaviedli nový index index\_approved na stĺpci approved tabuľky patch.
+    Pre zrýchlenie príkazu sme zaviedli nový index \texttt{index\_approved} na stĺpci \texttt{approved} tabuľky \texttt{patch}.
 
     \subsection{Prístupové práva}\label{subsec:prístupové-práva}
 
-    Pre každú tabuľku a materializovaný pohľad je vykonaný príkaz GRANT s právami ALL.
-    Pre procedúry postačí právo execute, preto je pre každú procedúru vykonaný príkaz GRANT s právom EXECUTE.
+    Pre každú tabuľku a materializovaný pohľad je vykonaný príkaz \texttt{GRANT} s právami \texttt{ALL}.
+    Pre procedúry postačí právo execute, preto je pre každú procedúru vykonaný príkaz \texttt{GRANT} s právom \texttt{EXECUTE}.
 
     \subsection{Materializovaný pohľad}\label{subsec:materializovaný-pohľad}
 
     Vytvorili sme materializovaný pohľad ktorý zobrazí všetky tickety, kto ich vytvoril a zoradí ich podľa statusu.
     Dáta v materializovanom pohľade sa neaktualizujú ak sa zmení hodnota v tabuľkách z ktorých je vytvorený.
-
 
 \end{document}
